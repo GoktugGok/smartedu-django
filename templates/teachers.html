@@ -11,7 +11,7 @@
 	<div id="teachers" class="section wb">
         <div class="container">
             <div class="row">
-				{% for teacher in object_list %}
+				{% for teacher in teachers %}
 					<div class="col-lg-3 col-md-6 col-12">
 						<div class="our-team">
 							<div class="team-img">
@@ -26,7 +26,7 @@
 								</div>
 							</div>
 							<div class="team-content">
-								<h3 class="title">{{teacher.name}}</h3>
+								<h3 class="title"><a href="{% url 'teacher_detail' teacher.pk %}">{{teacher.name}}</a></h3>
 								<span class="post">{{teacher.title}}</span>
 							</div>
 						</div>
@@ -34,6 +34,26 @@
 				{% endfor %}
 
             </div><!-- end row -->
+			{% comment %} <div class="row">
+				<div class="pagination">
+					<span class="step-links">
+						{% if page_obj.has_previous %}
+							<a href="?page=1">&laquo; first</a>
+							<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+						{% endif %}
+				
+						<span class="current">
+							Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+						</span>
+				
+						{% if page_obj.has_next %}
+							<a href="?page={{ page_obj.next_page_number }}">next</a>
+							<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+						{% endif %}
+					</span>
+				</div>
+			</div> {% endcomment %}
+
         </div><!-- end container -->
     </div><!-- end section -->	
 	{% endblock %}
