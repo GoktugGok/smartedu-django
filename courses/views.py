@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from . models import Courses, Category, Tag
+from django.shortcuts import get_object_or_404
 
-def course_list(request):
+"""def course_list(request):
     courses = Courses.objects.all().order_by('-date')
     categories = Category.objects.all()
     tags = Tag.objects.all()
@@ -11,17 +12,34 @@ def course_list(request):
         'categories': categories,
         'tags': tags
     }
+    return render(request, 'courses.html', context)"""
+
+def course_list(request, category_slug=None,tag_slug=None):
+    category_page = None
+    tag_page = None
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+
+    if category_slug != None:
+        category_page = get_object_or_404(Category, slug=category_slug)
+        courses = Courses.objects.filter(available=True,category=category_page)
+
+    elif tag_slug != None:
+        tag_page = get_object_or_404(Tag, slug=tag_slug)
+        courses = Courses.objects.filter(available=True, tags=tag_page)
+
+    else:
+        courses = Courses.objects.all().order_by("-date")
+    
+    context = {
+        'courses': courses,
+        'categories': categories,
+        'tags': tags
+    }
     return render(request, 'courses.html', context)
 
-def course_detail(request, category_slug, course_id):
-    course = Courses.objects.get(category__slug=category_slug,id= course_id)    
 
-    context = {
-        'course': course
-    }
-
-    return render(request,'course.html',context)
-
+"""
 def category_list(request, category_slug):
     courses = Courses.objects.all().filter(category__slug = category_slug)
     categories = Category.objects.all()
@@ -47,3 +65,12 @@ def tag_list(request, tag_slug):
     }
 
     return render(request,'courses.html',context)
+"""
+def course_detail(request, category_slug, course_id):
+    course = Courses.objects.get(category__slug=category_slug,id= course_id)    
+
+    context = {
+        'course': course
+    }
+
+    return render(request,'course.html',context)
