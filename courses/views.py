@@ -2,17 +2,14 @@ from django.shortcuts import render
 from . models import Courses, Category, Tag
 from django.shortcuts import get_object_or_404
 
-"""def course_list(request):
-    courses = Courses.objects.all().order_by('-date')
-    categories = Category.objects.all()
-    tags = Tag.objects.all()
+def course_detail(request, category_slug, course_id):
+    course = Courses.objects.get(category__slug=category_slug,id= course_id)    
 
     context = {
-        'courses': courses,
-        'categories': categories,
-        'tags': tags
+        'course': course
     }
-    return render(request, 'courses.html', context)"""
+
+    return render(request,'course.html',context)
 
 def course_list(request, category_slug=None,tag_slug=None):
     category_page = None
@@ -30,7 +27,7 @@ def course_list(request, category_slug=None,tag_slug=None):
 
     else:
         courses = Courses.objects.all().order_by("-date")
-    
+
     context = {
         'courses': courses,
         'categories': categories,
@@ -38,6 +35,30 @@ def course_list(request, category_slug=None,tag_slug=None):
     }
     return render(request, 'courses.html', context)
 
+def search(request):
+    courses = Courses.objects.all().filter(name__contains = request.GET['search'])
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+
+    context = {
+        'courses': courses,
+        'categories': categories,
+        'tags': tags
+    }
+    return render(request, 'courses.html', context)
+
+
+"""def course_list(request):
+    courses = Courses.objects.all().order_by('-date')
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
+
+    context = {
+        'courses': courses,
+        'categories': categories,
+        'tags': tags
+    }
+    return render(request, 'courses.html', context)"""
 
 """
 def category_list(request, category_slug):
@@ -66,11 +87,3 @@ def tag_list(request, tag_slug):
 
     return render(request,'courses.html',context)
 """
-def course_detail(request, category_slug, course_id):
-    course = Courses.objects.get(category__slug=category_slug,id= course_id)    
-
-    context = {
-        'course': course
-    }
-
-    return render(request,'course.html',context)
