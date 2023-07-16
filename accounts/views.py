@@ -17,10 +17,10 @@ def user_login(request):
                     return redirect('home')
                 
                 else:
-                    messages.info(request, 'Disable Account')
+                    messages.warning(request, 'Disable Account')
             
             else:
-                 messages.info(request, 'Check Your Username and Password')
+                 messages.warning(request, 'Check Your Username and Password')
     
     else:
         form = LoginForm()
@@ -29,12 +29,25 @@ def user_login(request):
 
 
 def user_register(request):
-    return render(request,'register.html')
+        if request.method == 'POST':
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Account has been created, You can LOGIN")
+                return redirect('login')
+            
+        else:
+            form = RegisterForm()
+
+        return render(request,'register.html',{'form':form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')
 
 def user_dashboard(request):
     pass
 
-def user_logout(request):
-    pass
+
 
 
