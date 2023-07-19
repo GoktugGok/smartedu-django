@@ -2,6 +2,7 @@ from django.shortcuts import render , redirect
 from . forms import LoginForm , RegisterForm
 from django.contrib.auth import authenticate, logout , login
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
     if request.method == 'POST':
@@ -45,9 +46,10 @@ def user_logout(request):
     logout(request)
     return redirect('home')
 
+@login_required(login_url='login')
 def user_dashboard(request):
-    pass
-
+    current_user = request.user
+    return render(request,'dashboard.html')
 
 
 
