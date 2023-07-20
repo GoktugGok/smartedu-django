@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from . models import Courses, Category, Tag
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 def course_detail(request, category_slug, course_id):
-    course = Courses.objects.get(category__slug=category_slug,id= course_id)    
-
+    course = Courses.objects.get(category__slug=category_slug,id= course_id)
+    user = request.user
+    notagain = course.students.all().filter(id = user.id)
     context = {
-        'course': course
+        'course': course,
+        'user' : user,
+        'notagain': notagain,
     }
 
     return render(request,'course.html',context)
