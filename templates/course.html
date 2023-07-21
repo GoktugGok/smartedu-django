@@ -20,18 +20,10 @@
 						<div class="post-content">
 							<div class="post-date">
 								 {% if user.is_authenticated  %}
-									{% if notagain %}
-										 {% comment %} <button  class="btn">
-											<a href="{% url 'cancel_user' course.id %}"  class="btn btn-outline-danger rounded-0 ">
-												CANCEL
-										 	</a>
-										</button>  {% endcomment %}
-									    <form action="{% url 'cancel_the_user' %}" method="POST">
-											{% csrf_token %}
-												<input type="hidden" name="user_id" value="{{user.id}}">
-												<input type="hidden" name="course_id" value="{{course.id}}">
-												<input type="submit" value="CANCEL" class="btn btn-danger">
-										</form> 
+									{% if course in enrolled_courses %}
+										<button type="submit" class="btn btn-outline-danger rounded-0" data-toggle="modal" data-target="#enrollModal">
+											<span>RELEASE</span>
+										</button>
 									{% else %}
 										<button type="submit" class="btn btn-outline-success rounded-0" data-toggle="modal" data-target="#enrollModal">
 											<span>ENROLL</span>

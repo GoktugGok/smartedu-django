@@ -15,28 +15,28 @@
                 <div class="col-lg-9 blog-post-single">
                     <div class="row"> 
                         {% for course in courses %}
-                            <div class="col-lg-6 col-md-6 col-12 mb-4">
-                                <div class="course-item">
-                                    <div class="image-blog">
-                                        <img src="{{course.image.url}}" alt="" style=" height: 300px;" class="img-fluid img-thumbnail ">
-                                    </div>
-                                    <div class="course-br">
-                                        <div class="course-title">
-                                            <h2><a href="{% url 'course_detail' course.category.slug course.id %}" title="">{{course.name}}</a></h2>
+                                <div class="col-lg-6 col-md-6 col-12 mb-4">
+                                    <div class="course-item">
+                                        <div class="image-blog">
+                                            <img src="{{course.image.url}}" alt="" style=" height: 300px;" class="img-fluid img-thumbnail ">
                                         </div>
-                                        <div class="course-desc">
-                                            <p>{{course.description | truncatechars:140}} </p>
+                                        <div class="course-br">
+                                            <div class="course-title">
+                                                <h2><a href="{% url 'course_detail' course.category.slug course.id %}" title="">{{course.name}}</a></h2>
+                                            </div>
+                                            <div class="course-desc">
+                                                <p>{{course.description | truncatechars:140}} </p>
+                                            </div>
+                                        </div>
+                                        <div class="course-meta-bot">
+                                            <ul>
+                                                <li><i class="fa fa-calendar" aria-hidden="true"></i> {{course.date|date:"d M Y"}}</li>
+                                                <li><i class="fa fa-book" aria-hidden="true"></i> {{course.teacher}}</li>
+                                                <li><i class="fa fa-users" aria-hidden="true"></i> {{course.students.all.count}}</li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="course-meta-bot">
-                                        <ul>
-                                            <li><i class="fa fa-calendar" aria-hidden="true"></i> {{course.date|date:"d M Y"}}</li>
-                                            <li><i class="fa fa-users" aria-hidden="true"></i> {{course.teacher}}</li>
-                                            <li><i class="fa fa-book" aria-hidden="true"></i> 7 Books</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div><!-- end col -->
+                                </div><!-- end col -->
                         {% endfor %}
                     </div>
                 </div><!-- end col -->

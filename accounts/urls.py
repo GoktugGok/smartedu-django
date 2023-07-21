@@ -7,5 +7,4 @@ urlpatterns = [
     path('dashboard/', views.user_dashboard, name="dashboard"),
     path('logout/', views.user_logout, name="logout"),
     path('enroll_the_course/',views.enroll_the_course, name='enroll_the_course'),
-    path("cancel_the_course/", views.cancel_the_course, name="cancel_the_course")
 ]

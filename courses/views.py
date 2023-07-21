@@ -4,13 +4,12 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
 def course_detail(request, category_slug, course_id):
-    course = Courses.objects.get(category__slug=category_slug,id= course_id)
-    user = request.user
-    notagain = course.students.all().filter(id = user.id)
+    current_user = request.user
+    course = Courses.objects.get(category__slug=category_slug,id= course_id) 
+    enrolled_courses = current_user.courses_joined.all()
     context = {
         'course': course,
-        'user' : user,
-        'notagain': notagain,
+        'enrolled_courses' : enrolled_courses,
     }
 
     return render(request,'course.html',context)
@@ -19,6 +18,7 @@ def course_list(request, category_slug=None,tag_slug=None):
     category_page = None
     tag_page = None
     categories = Category.objects.all()
+    current_user = request.user
     tags = Tag.objects.all()
 
     if category_slug != None:
@@ -30,12 +30,17 @@ def course_list(request, category_slug=None,tag_slug=None):
         courses = Courses.objects.filter(available=True, tags=tag_page)
 
     else:
-        courses = Courses.objects.all().order_by("-date")
+        if current_user.is_authenticated:
+            enrolled_courses = current_user.courses_joined.all()
+            courses = Courses.objects.all().order_by("-date")
+            for course in enrolled_courses:
+                courses = courses.exclude(id = course.id)
 
     context = {
         'courses': courses,
         'categories': categories,
-        'tags': tags
+        'tags': tags,
+
     }
     return render(request, 'courses.html', context)
 
