@@ -29,12 +29,13 @@ def course_list(request, category_slug=None,tag_slug=None):
         tag_page = get_object_or_404(Tag, slug=tag_slug)
         courses = Courses.objects.filter(available=True, tags=tag_page)
 
+    elif current_user.is_authenticated:
+        enrolled_courses = current_user.courses_joined.all()
+        courses = Courses.objects.all().order_by("-date")
+        for course in enrolled_courses:
+            courses = courses.exclude(id = course.id)
     else:
-        if current_user.is_authenticated:
-            enrolled_courses = current_user.courses_joined.all()
-            courses = Courses.objects.all().order_by("-date")
-            for course in enrolled_courses:
-                courses = courses.exclude(id = course.id)
+        courses = Courses.objects.all().order_by("-date")
 
     context = {
         'courses': courses,
