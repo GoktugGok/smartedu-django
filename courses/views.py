@@ -6,10 +6,17 @@ from django.contrib.auth.models import User
 def course_detail(request, category_slug, course_id):
     current_user = request.user
     course = Courses.objects.get(category__slug=category_slug,id= course_id) 
-    enrolled_courses = current_user.courses_joined.all()
+    tags = Tag.objects.all()
+    categories = Category.objects.all()
+    if current_user.is_authenticated:
+        enrolled_courses = current_user.courses_joined.all()
+    else:
+        enrolled_courses = None
     context = {
         'course': course,
         'enrolled_courses' : enrolled_courses,
+        'categories':categories,
+        'tags':tags
     }
 
     return render(request,'course.html',context)

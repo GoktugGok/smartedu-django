@@ -3,7 +3,7 @@ from . models import Courses ,Category, Tag
 
 @admin.register(Courses)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name','available')
+    list_display = ('name','available','teacher',)
     list_filter = ('available',)
     search_fields = ('name', 'description')
 
